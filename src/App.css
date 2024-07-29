@@ -1,20 +1,6 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  background-color: #c92626;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,8 +10,36 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+#FFMSelectors {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+#left {
+  padding-left: 100px;
+}
+
+#right {
+  padding-right: 100px;
+}
+
+button.FFRS img {
+  width: 100px;
+  height: 100px;
+}
+
+button.FFRS {
+  width: 100px;
+  height: 100px;
+
+  background: top right no-repeat;
+  background-size: cover;
 }
 
 @keyframes App-logo-spin {

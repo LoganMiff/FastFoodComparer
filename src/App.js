@@ -1,22 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+
+import FFRSelectionGen from './components/ffr_components/FFRSelectionGen';
+
+import FFMacroSelection from './components/FFMacroSelection';
+import FFQueryButton from './components/FFQueryButton';
+
+import FFItemGen from './components/ffi_components/FFItemGen';
+
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Fast Food Comparer</h1>
+
+        <div id="FFMSelectors">
+          <FFMacroSelection id="left"></FFMacroSelection>
+          <FFMacroSelection id="right"></FFMacroSelection>
+        </div>
+
+        <FFRSelectionGen />
       </header>
     </div>
   );
