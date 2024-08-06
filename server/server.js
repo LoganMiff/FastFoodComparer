@@ -43,7 +43,7 @@ const dataGet = (tables, request, response) => {
             db.serialize(() => {
                 let column_names = getCols(db)
 
-                let res_text = '{ "food_items": [';
+                let ffitems_json = {"food_items" : []};
 
                 for (const ff_place of tables) {
                     const ffr = ffr_tables[ff_place]
@@ -63,20 +63,15 @@ const dataGet = (tables, request, response) => {
                             return;
                         }
 
-                        res_text += '{';
+                        const item = {};
 
-                        res_text += ' "fast_food_restaurant":"' + ffr + '" ';
+                        item["fast_food_restraunt"] = ffr;
 
                         for (let i = 0; i < column_names.length; ++i) {
-                            if (i == 0) {
-                                res_text += ' "' + column_names[i] + '":"' + row[column_names[i]] + '" ';
-                            }
-                            else {
-                                res_text += ' "' + column_names[i] + '":' + row[column_names[i]] + ' ';
-                            }
+                            item[column_names[i]] = row[column_names[i]];
                         }
 
-                        res_text += '},';
+                        ffitems_json.food_items.push(item);
                     });
                 }
 
@@ -85,8 +80,6 @@ const dataGet = (tables, request, response) => {
                         console.error(err);
                         return;
                     }
-
-                    res_text += " ]}";
 
                     switch(response.statusCode) {
                         case 404:
@@ -100,7 +93,7 @@ const dataGet = (tables, request, response) => {
                     }
 
                     response.statusCode = 200;
-                    response.end(res_text);
+                    response.end(JSON.stringify(ffitems_json));
         
                     console.log("...closed Database connection");
                 });

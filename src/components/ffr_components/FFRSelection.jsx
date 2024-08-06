@@ -1,22 +1,30 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useState } from 'react'
 
-// eslint-disable-next-line
-const FFRClicked = (selected, setSelected) => {
-    setSelected(!selected)
-
-    alert((selected) ? "Selected!" : "Not selected!!!")
-
-}
-
-const FFRSelection = ({img, name}) => {
-    let [selected, setSelected] = useState(true)
+const FFRSelection = ({img, name, setFFSelect}) => {
+    const [className, setClassName] = useState("FFRS");
 
     return (
-        <button className="FFRS" style={{
-                    backgroundImage: "url(" + img + ")"
-                }} 
-            onClick={() => FFRClicked(selected, setSelected)}>
+        <button 
+            className={className} 
+            style={{backgroundImage: "url(" + img + ")"}} 
+            onClick={() => {
+                let selected = !className.includes("SELECTED");
+
+                setClassName((selected) ? "FFRS SELECTED" : "FFRS");
+                
+                setFFSelect((ff_restraunts) => {
+                    if (selected) {
+            
+                        ff_restraunts.push(name);
+                    } 
+                    else if(ff_restraunts.indexOf(name) !== -1){
+            
+                        ff_restraunts.splice(ff_restraunts.indexOf(name), 1);
+                    }
+
+                    return ff_restraunts;
+                });
+            }}>
         </button>
     )
 }
