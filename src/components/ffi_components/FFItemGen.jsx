@@ -50,7 +50,7 @@ const FFItemGen = (props) => {
             <thead>
                 <tr>
                     <th>Rank</th>
-                    <th>Restraunt</th>
+                    <th>Restaurant</th>
                     <th>Item Name</th>
                     {ff_headers}
                 </tr>
