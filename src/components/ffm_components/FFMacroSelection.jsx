@@ -28,6 +28,7 @@ const FFMacroSelection = ({selection, other_selection, setter, id}) => {
 
             cols.splice(cols.indexOf(selection), 1);
             cols.splice(cols.indexOf(other_selection), 1);
+            cols.splice(cols.indexOf("is_drink"), 1);
 
             setMacros(cols.map((col, i) =>
                 (<p key={i} onClick={() => setter(col)}>{col}</p>)
@@ -42,6 +43,7 @@ const FFMacroSelection = ({selection, other_selection, setter, id}) => {
 
         cols.splice(cols.indexOf(selection), 1);
         cols.splice(cols.indexOf(other_selection), 1);
+        cols.splice(cols.indexOf("is_drink"), 1);
 
         setMacros(cols.map((col, i) =>
             (<p key={i} onClick={() => setter(col)}>{col}</p>)

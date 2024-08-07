@@ -11,6 +11,7 @@ const FFItem = (props) => {
     objKeys.splice(0, 2);
     objKeys.splice(objKeys.indexOf(left), 1);
     objKeys.splice(objKeys.indexOf(right), 1);
+    objKeys.splice(objKeys.indexOf("is_drink", 1));
 
     let itemProps = [
         <td key={0}>{`#${props.rank}`}</td>,

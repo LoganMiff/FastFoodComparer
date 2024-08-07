@@ -1,6 +1,6 @@
 import './App.css';
 
-import React, {useState} from 'react'
+import React, {useState, useRef } from 'react'
 
 import FFRSelectionGen from './components/ffr_components/FFRSelectionGen';
 
@@ -49,6 +49,11 @@ function App() {
   const [ff_items, setFFItems] = useState([]);
 
   const [ffitem_view_start, setFFIViewStart] = useState(0);
+  const [ff_drinks_shown, setDrinksShown] = useState(false);
+
+  // eslint-disable-next-line
+  const tableRef = useRef(null);
+  const buttonRef = useRef(null);
 
   return (
     <div className="App">
@@ -56,38 +61,97 @@ function App() {
         <h1>Fast Food Ranker</h1>
         
         <div className="QUERY_SELECTION">
-            <div id="FFMSelectors">
+            <div ref={tableRef} id="FFMSelectors">
                 <FFMacroSelection id="left" selection={macroLeft} other_selection={macroRight} setter={setLeft}></FFMacroSelection>
                 <FFMacroSelection id="right" selection={macroRight} other_selection={macroLeft} setter={setRight}></FFMacroSelection>
             </div>
         </div>
 
-        <FFItemGen view_start={ffitem_view_start} maximizer={macroLeft} minimizer={macroRight}>{ff_items}</FFItemGen>
+        <FFItemGen view_start={ffitem_view_start} drinks_shown={ff_drinks_shown} maximizer={macroLeft} minimizer={macroRight}>{ff_items}</FFItemGen>
 
-        <div className="BUTTON_BAR">
-          <button onClick={() => setFFIViewStart((prev_view_start) => {
-            if (prev_view_start - 50 < 0) {
-              return prev_view_start;
+        <button ref={buttonRef} onClick={() => {
+          setDrinksShown(!ff_drinks_shown);
+          
+          setFFIViewStart((prev_view_start) => {
+            const filtered_ff_items = ((ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)) : ff_items);
+
+            if (prev_view_start > filtered_ff_items.length) {
+              console.log(((filtered_ff_items.length % 50 > 0) ? filtered_ff_items.length - (filtered_ff_items.length % 50) : filtered_ff_items - 50));
+              return ((filtered_ff_items.length % 50 > 0) ? filtered_ff_items.length - (filtered_ff_items.length % 50) : filtered_ff_items - 50);
             }
 
-            return prev_view_start - 50
-          })}>
+            return prev_view_start
+          });
+
+          tableRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: "nearest",
+            inline: "start"
+          });
+        }}>
+          DRINKS {((ff_drinks_shown) ? "SHOWN" : "HIDDEN")}
+        </button>
+
+        <div className="BUTTON_BAR">
+
+          <button onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            setFFIViewStart((prev_view_start) => {
+              if (prev_view_start - 50 < 0) {
+                return prev_view_start;
+              }
+
+              return prev_view_start - 50
+            });
+
+            buttonRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: "nearest",
+              inline: "start"
+            });
+          }}>
             {`#${(ffitem_view_start - 50 < 0) ? 0 : ffitem_view_start - 49} - #${ffitem_view_start} `}&#8592;
           </button>
-          <button onClick={() => {
+          
+          <button onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
             runQuery(macroLeft, macroRight, ff_restraunts, setFFItems)
             setFFIViewStart(0);
+
+            tableRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: "nearest",
+              inline: "start"
+            });
           }}>
             COMPARE
           </button>
-          <button onClick={() => setFFIViewStart((prev_view_start) => {
-            if (prev_view_start + 50 > ff_items.length) {
-              return prev_view_start;
-            }
+          
+          <button onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
 
-            return prev_view_start + 50
-          })}>
-            &#8594;{` #${ffitem_view_start + 51} - #${((ffitem_view_start + 100 > ff_items.length) ? ff_items.length : ffitem_view_start + 100)}`}
+            setFFIViewStart((prev_view_start) => {
+              const filtered_ff_items = ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)) : ff_items);
+
+              if (prev_view_start + 50 > filtered_ff_items.length) {
+                return prev_view_start;
+              }
+
+              return prev_view_start + 50
+            })
+
+            buttonRef.current.scrollIntoView({
+              behavior: 'smooth',
+              block: "nearest",
+              inline: "start"
+            });
+          }}>
+            &#8594;{` #${((ffitem_view_start + 51 > ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)).length : ff_items.length)) ? ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)).length : ff_items.length) : ffitem_view_start + 51)} - #${((ffitem_view_start + 100 > ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)).length : ff_items.length)) ? ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)).length : ff_items.length) : ffitem_view_start + 100)}`}
           </button>
         </div>
 

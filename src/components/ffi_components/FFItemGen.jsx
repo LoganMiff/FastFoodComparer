@@ -8,8 +8,10 @@ const FFItemGen = (props) => {
     useEffect(() => {
         const left = props.maximizer.toLowerCase();
         const right = props.minimizer.toLowerCase();
+        
+        const unsorted_items = ((!props.drinks_shown) ? props.children.filter((item) => (!item.is_drink)) : props.children);
 
-        const items = props.children.toSorted((smaller_obj, larger_obj) => {
+        const items = unsorted_items.toSorted((smaller_obj, larger_obj) => {
             if (smaller_obj[left] === larger_obj[left] && larger_obj[left] === 0) {
               return smaller_obj[right] - larger_obj[right];
             }
