@@ -46,7 +46,7 @@ const FFMacroSelection = ({selection, other_selection, setter, id}) => {
         cols.splice(cols.indexOf("is_drink"), 1);
 
         setMacros(cols.map((col, i) =>
-            (<p key={i} onClick={() => setter(col)}>{col}</p>)
+            (<li key={i} onClick={() => setter(col)}>{col}</li>)
         ));
     }, 
     // eslint-disable-next-line
@@ -54,10 +54,18 @@ const FFMacroSelection = ({selection, other_selection, setter, id}) => {
 
     return (
         <div id={id} className="macro_dropdown">
-            <h2>{selection}</h2>
-            <div className="dropdown_options">
+            <label for={`touch_${id}`}>
+                <span className="unselectable">
+                    {selection}
+                </span>
+            </label>
+
+            <input type="checkbox" id={`touch_${id}`} />
+
+            <ul className="dropdown_options">
                 {macros}
-            </div>
+            </ul>
+            
         </div>
     );
 }

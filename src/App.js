@@ -53,7 +53,6 @@ function App() {
 
   // eslint-disable-next-line
   const tableRef = useRef(null);
-  const buttonRef = useRef(null);
 
   return (
     <div className="App">
@@ -63,13 +62,12 @@ function App() {
         <div className="QUERY_SELECTION">
             <div ref={tableRef} id="FFMSelectors">
                 <FFMacroSelection id="left" selection={macroLeft} other_selection={macroRight} setter={setLeft}></FFMacroSelection>
+                <img id="greater_than" src="/images/greater_than_ff.png" alt="greater than sign"></img>
                 <FFMacroSelection id="right" selection={macroRight} other_selection={macroLeft} setter={setRight}></FFMacroSelection>
             </div>
         </div>
 
-        <FFItemGen view_start={ffitem_view_start} drinks_shown={ff_drinks_shown} maximizer={macroLeft} minimizer={macroRight}>{ff_items}</FFItemGen>
-
-        <button ref={buttonRef} onClick={() => {
+        <button onClick={() => {
           setDrinksShown(!ff_drinks_shown);
           
           setFFIViewStart((prev_view_start) => {
@@ -81,12 +79,6 @@ function App() {
             }
 
             return prev_view_start
-          });
-
-          tableRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block: "nearest",
-            inline: "start"
           });
         }}>
           DRINKS {((ff_drinks_shown) ? "SHOWN" : "HIDDEN")}
@@ -105,12 +97,6 @@ function App() {
 
               return prev_view_start - 50
             });
-
-            buttonRef.current.scrollIntoView({
-              behavior: 'smooth',
-              block: "nearest",
-              inline: "start"
-            });
           }}>
             {`#${(ffitem_view_start - 50 < 0) ? 0 : ffitem_view_start - 49} - #${ffitem_view_start} `}&#8592;
           </button>
@@ -121,12 +107,6 @@ function App() {
 
             runQuery(macroLeft, macroRight, ff_restraunts, setFFItems)
             setFFIViewStart(0);
-
-            tableRef.current.scrollIntoView({
-              behavior: 'smooth',
-              block: "nearest",
-              inline: "start"
-            });
           }}>
             COMPARE
           </button>
@@ -144,16 +124,21 @@ function App() {
 
               return prev_view_start + 50
             })
-
-            buttonRef.current.scrollIntoView({
-              behavior: 'smooth',
-              block: "nearest",
-              inline: "start"
-            });
           }}>
             &#8594;{` #${((ffitem_view_start + 51 > ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)).length : ff_items.length)) ? ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)).length : ff_items.length) : ffitem_view_start + 51)} - #${((ffitem_view_start + 100 > ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)).length : ff_items.length)) ? ((!ff_drinks_shown) ? ff_items.filter((item) => (!item.is_drink)).length : ff_items.length) : ffitem_view_start + 100)}`}
           </button>
         </div>
+
+        <FFItemGen view_start={ffitem_view_start} drinks_shown={ff_drinks_shown} maximizer={macroLeft} minimizer={macroRight}>{ff_items}</FFItemGen>
+        
+        <button onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+
+          tableRef.current.scrollIntoView()
+        }}>
+          BACK TO TOP
+        </button>
 
         <FFRSelectionGen setter={setFFRestraunts}/>
       </header>
