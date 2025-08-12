@@ -1,12 +1,15 @@
+const path = require("path");
 const http = require("node:http");
 const sqlite3 = require("sqlite3").verbose();
 
 let ffr_tables = {};
 
 const startDatabase = () => {
-    return new sqlite3.Database("../database/fast_food.db", (err) => {
+    const db_path = path.join(__dirname, "../database/fast_food.db");
+
+    return new sqlite3.Database(db_path, (err) => {
         if(err) {
-            console.error(err);
+            console.error("Failure to open database file.");
             return;
         }
 

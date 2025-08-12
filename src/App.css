@@ -68,10 +68,10 @@ span::after {
 
 #touch_left, #touch_right {position: absolute; opacity: 0; height: 0px;}    
 
-#touch_left:checked + .dropdown_options {height: 300px;}
+#touch_left:checked + .dropdown_options {height: 350px;}
 span::after ~ #touch_left:checked {content: "-"}
 
-#touch_right:checked + .dropdown_options {height: 300px;}
+#touch_right:checked + .dropdown_options {height: 350px;}
 span::after ~ #touch_right:checked {content: "-"}
 
 #greater_than {
